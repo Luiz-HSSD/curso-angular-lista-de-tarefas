@@ -1,0 +1,36 @@
+@if(!getListItems().length){
+<div class="container">
+    <img
+        src="/assets/img/task-list-null.png"
+        alt="Sua lista está vazia - imagem ilustrativa"
+        loading="eager"
+    />
+    @if(addItem()){
+    <button class="btn btn-primary" (click)="addItem.set(false)">Crie uma lista de tarefas</button>
+    }@else {
+    <app-input-add-item 
+    [inputListItems]="getListItems()" (outpuaddtListItem)="getInputAddItem($event)"></app-input-add-item>
+    }
+</div>
+}@else {
+    <app-input-add-item 
+    [inputListItems]="getListItems()" (outpuaddtListItem)="getInputAddItem($event)"></app-input-add-item>
+
+    <main class="container">
+        @if(ListItemsStage('pending').length){
+        <h2>Pendências</h2>
+        <app-input-list-item (outputDeleteitem)="deleteItem($event)" (outputUpdateitemText)="UpdateitemText($event)" (outputUpdateitemCheckbox)="UpdateitemCheckbox($event)" [inputListItems]="ListItemsStage('pending')" />
+        }
+        @if(ListItemsStage('completed').length){
+        <h2>Concluídas</h2>
+        <app-input-list-item (outputDeleteitem)="deleteItem($event)" (outputUpdateitemText)="UpdateitemText($event)" (outputUpdateitemCheckbox)="UpdateitemCheckbox($event)" [inputListItems]="ListItemsStage('completed')" />
+        }
+
+    </main>
+
+    <footer>
+        <button class="btn btn-danger" (click)="deleteAllItems()">
+            Deletar todos os Items
+        </button>
+    </footer>
+}
